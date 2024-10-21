@@ -1,0 +1,18 @@
+@import "../../css/colors.css";
+
+section {
+    display: flex;
+    flex-direction: column;
+}
+
+div {
+    width: 100%;
+}
+
+label {
+    position: relative;
+    top: 20px;
+    font-size: 12px;
+    padding: 2px 16px 2px 16px;
+    margin: 16px;
+}

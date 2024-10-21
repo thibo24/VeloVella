@@ -1,0 +1,14 @@
+* {
+  --primary: #65558F;
+  --on-primary: #FFFFFF;
+
+  --surface-container: #EFEBF2;
+  --on-surface-variant: #49454F;
+  --surface-container-high: #ECE6F0;
+  --surface-container-high-focus: #e3dde8;
+
+  --outline-variant: #EEEEEE;
+
+  --error-container: #F9DEDC;
+  --on-error-container: #852221;
+}
