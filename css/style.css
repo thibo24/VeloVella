@@ -23,7 +23,6 @@ html {
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 body {
@@ -36,18 +35,108 @@ body {
 main {
   width: 100vw;
   height: 100vh;
+}
+
+main * {
+  border-radius: 16px;
+  color: var(--on-surface-variant);
+}
+
+#main-screen {
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+#main-screen > * {
+  width: calc(33.33% - 24px - 32px); /* 33.33% de la largeur - (gap gauche + gap droite) - padding */
+  padding: 16px;
+  min-width: 240px;
+  margin: 16px 0 16px 0;
 }
 
 #left-menu {
-  background-color: white;
-  border-radius: 16px;
-  width: 33%;
-  min-width: 300px;
-  margin: 16px;
-  height: calc(100% - 32px); /* 100% de la hauteur - (marge * 2) */
+  background-color: var(--on-primary);
+  height: calc(100% - 32px); /* 100% de la hauteur - gap */
+  padding: 0 16px 0 16px;
 }
+
+#error-pop-up {
+  background-color: var(--error-container);
+  height: auto;
+}
+
+#error-pop-up * {
+  color: var(--on-error-container);
+}
+
+#info-pop-up {
+  background-color: var(--on-primary);
+  height: auto;
+}
+
+#info-pop-up * {
+  color: var(--primary);
+}
+
+#fab-help {
+  background-color: var(--surface-container);
+  color: var(--primary);
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+#fab-help:hover {
+  background-color: var(--surface-container-high);
+}
+
+.div-with-icon {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  position: relative;
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+}
+
+.pop-up-text {
+  display: flex;
+  align-items: center;
+}
+
+.pop-up-close-button {
+  background-color: var(--on-primary);
+  border-radius: 50%;
+
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  height: 24px;
+  width: 24px;
+  margin: auto;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pop-up-close-button img {
+  height: 12px;
+  width: 12px;
+}
+
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301

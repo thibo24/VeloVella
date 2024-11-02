@@ -3,15 +3,14 @@
 input {
   background-color: var(--surface-container-high);
   height: 56px;
-  width: calc(100% - 32px - 32px); /* 100% de la hauteur - (padding * 2) - (marge * 2) */
-  margin: 0 16px 0 16px;
+  width: calc(100% - 32px); /* 100% de la largeur - padding */
+  padding: 0 16px 0 16px;
   border: 0;
   border-radius: 16px;
   font-size: 16px;
-  padding: 0 16px 0 16px;
   outline-style: none;
 }
 
-input:focus {
-  background-color: var(--surface-container-high-focus);
+input:hover {
+  background-color: var(--surface-container-high-hover);
 }

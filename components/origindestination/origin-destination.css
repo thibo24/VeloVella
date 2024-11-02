@@ -1,18 +1,21 @@
 @import "../../css/colors.css";
 
 section {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-div {
-    width: 100%;
+.text-field {
+  width: 100%;
+}
+
+.label-div {
+  height: 16px;
 }
 
 label {
-    position: relative;
-    top: 20px;
-    font-size: 12px;
-    padding: 2px 16px 2px 16px;
-    margin: 16px;
+  position: relative;
+  top: 16px;
+  font-size: 12px;
+  padding-left: 16px;
 }
