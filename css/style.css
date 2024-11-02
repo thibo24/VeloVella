@@ -68,16 +68,29 @@ main * {
   height: auto;
 }
 
-#error-pop-up * {
-  color: var(--on-error-container);
-}
-
 #info-pop-up {
   background-color: var(--on-primary);
   height: auto;
 }
 
-#info-pop-up * {
+#help-pop-up {
+  background-color: var(--surface-container);
+  color: var(--primary);
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 300px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+#error-pop-up * {
+  color: var(--on-error-container);
+}
+
+#info-pop-up *,
+#help-pop-up * {
   color: var(--primary);
 }
 
