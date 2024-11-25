@@ -1,0 +1,17 @@
+@import "../../css/colors.css";
+
+input {
+  background-color: var(--surface-container-high);
+  height: 56px;
+  width: calc(100% - 32px); /* 100% de la largeur - padding */
+  padding: 0 16px 0 16px;
+  border: 0;
+  border-radius: 16px;
+  font-size: 16px;
+  outline-style: none;
+}
+
+input:hover {
+  background-color: var(--surface-container-high-hover);
+}
+
