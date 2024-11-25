@@ -37,10 +37,9 @@ class AutoCompleteAdress extends HTMLElement {
       this.callTimeout = 0;
 
       const input = this.shadowRoot.querySelector("input");
-      const div = this.shadowRoot.querySelector("div>ul");
 
       input.addEventListener("keydown", function(e) {
-        
+
         if (this.callTimeout) clearTimeout(this.callTimeout);
 
         this.callTimeout = setTimeout(function(){
@@ -54,33 +53,31 @@ class AutoCompleteAdress extends HTMLElement {
     }
 
     /* This method puts each adress in a <li> and warn whoever is listening whenever an option is selected. */
-    updateAutoCompleteList(adresses) {
-      let context = this;
+  updateAutoCompleteList(adresses) {
+    let context = this;
 
-      let list = this.shadowRoot.querySelector("div>ul");
-      list.innerHTML = "";
-      
-      for(let adress of adresses) {
-        let li = document.createElement("li");
-        let liContent = document.createTextNode(adress.properties.label);
+    let datalist = this.shadowRoot.getElementById("suggestion");
+    datalist.innerHTML = "";
 
-        li.appendChild(liContent);
+    for (let adress of adresses) {
+      let option = document.createElement("option");
+      option.value = adress.properties.label;
+      console.log("reçu "+ adress.properties.label);
 
-        // There are many ways to send data to the parent (or anyone listening); one of them is to use custom events, like so:
-        li.addEventListener("click", function(){
-          let event = new CustomEvent("optionChosen", {
-            detail: {
-              name: context.name,
-              adress: adress
-            }
-          })
-
-          document.dispatchEvent(event);
+      option.addEventListener("click", function() {
+        let event = new CustomEvent("optionChosen", {
+          detail: {
+            name: context.name,
+            adress: adress
+          }
         });
+        document.dispatchEvent(event);
+      });
 
-        list.appendChild(li);
-      }
+      datalist.appendChild(option);
     }
+    console.log("ajouté " + datalist.firstChild.nodeValue);
+  }
   }
 
 customElements.define("auto-complete-input", AutoCompleteAdress);
