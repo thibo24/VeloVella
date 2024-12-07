@@ -95,6 +95,16 @@ main * {
   z-index: 10;
 }
 
+#error-pop-up, #info-pop-up {
+  visibility: hidden;
+  opacity: 0;
+}
+
+#error-pop-up.visible, #info-pop-up.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
 #fab-help {
   background-color: var(--surface-container);
   color: var(--primary);
