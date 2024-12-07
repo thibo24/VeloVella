@@ -106,22 +106,6 @@ main * {
   opacity: 1;
 }
 
-#fab-help {
-  background-color: var(--surface-container);
-  color: var(--primary);
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  z-index: 10;
-}
-
-#fab-help:hover {
-  background-color: var(--surface-container-high);
-}
-
 .div-with-icon {
   display: flex;
   gap: 16px;

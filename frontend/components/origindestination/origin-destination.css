@@ -1,23 +1,61 @@
-@import "../../css/colors.css";
-
 section {
   display: flex;
   flex-direction: column;
+  gap: 16px; /* Ajoute un espace entre les champs */
 }
 
 .text-field {
+  display: flex;
+  flex-direction: column; /* Place le label au-dessus du champ */
+  position: relative;
   width: 100%;
 }
 
 .label-div {
-  height: 16px;
+  margin-bottom: 4px; /* Ajoute un petit espace entre le label et le champ */
 }
 
 label {
-  position: relative;
-  top: 16px;
   font-size: 12px;
-  padding-left: 16px;
+  color: var(--on-surface-variant);
+  top: 24px;
+  left: 16px;
+  position: relative;
+}
+
+.slot-container {
+  display: flex;
+  align-items: center; /* Aligne le champ et le bouton horizontalement */
+  background-color: var(--on-primary);
+  border-radius: 16px;
+}
+
+slot[name="origin"]::slotted(input),
+slot[name="destination"]::slotted(input) {
+  flex: 1 1 auto; /* Permet au champ de remplir l'espace disponible */
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: transparent;
+}
+
+.geo-button {
+  flex: 0 0 40px; /* Rend le bouton carré */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px; /* Ajoute un espace entre le champ et le bouton */
+  font-size: 20px;
+  border: none;
+  background-color: var(--surface-container-high);
+  color: var(--primary);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.geo-button:hover {
+  background-color: var(--surface-container-high-hover);
 }
 
 .button-container {

@@ -13,42 +13,22 @@ class OriginDestination extends HTMLElement {
 
       shadowRoot.appendChild(templateContent.cloneNode(true));
 
-      // Listen for custom events triggered by the autocomplete components
-      document.addEventListener(
-        "optionChosen",
-        function (event) {
-          console.log(`Selected ${event.detail.name} point:`, event.detail.adress);
+      // Gestion des boutons de géolocalisation
+      const geoStartButton = shadowRoot.getElementById("geo-start");
+      const geoEndButton = shadowRoot.getElementById("geo-end");
 
-          const { name, adress } = event.detail;
+      geoStartButton.addEventListener("click", () => useGeolocation("start"));
+      geoEndButton.addEventListener("click", () => useGeolocation("end"));
 
-          if (adress && adress.geometry && adress.geometry.coordinates) {
-            const [lng, lat] = adress.geometry.coordinates;
-            console.log("Coordinates received:", { lat, lng });
-
-            // Call the global functions defined in map.js
-            if (name === "start") {
-              window.updateStartMarker(lat, lng); // Update start marker
-            } else if (name === "end") {
-              window.updateEndMarker(lat, lng); // Update end marker
-            }
-          } else {
-            showPopup("error", `Le point ${name === "start" ? "de départ" : "d'arrivée"} est invalide`);
-          }
-        }.bind(this)
-      );
-
-      // Add an event listener for the search button
       const searchButton = shadowRoot.getElementById("search-button");
-      searchButton.addEventListener("click", () => {
-        console.log("Search button clicked");
-
+      searchButton.addEventListener("click", async () => {
+        // Récupérez et validez les valeurs comme avant
         const originInput = document.querySelector("auto-complete-input[name='start']").shadowRoot.querySelector("input");
         const destinationInput = document.querySelector("auto-complete-input[name='end']").shadowRoot.querySelector("input");
 
         const originValue = originInput?.value || "";
         const destinationValue = destinationInput?.value || "";
 
-        // Check if fields are filled
         if (!originValue) {
           showPopup("error", "Veuillez renseigner une adresse de départ");
           return;
@@ -58,18 +38,79 @@ class OriginDestination extends HTMLElement {
           return;
         }
 
-        // Validate the addresses by simulating API verification
-        validateAddress(originValue, "start");
-        validateAddress(destinationValue, "end");
+        try {
+          const originCoords = await validateAddress(originValue, "start");
+          const destinationCoords = await validateAddress(destinationValue, "end");
 
-        fetch("mock-data/Response.geojson") // Chemin relatif vers votre fichier
-          .then((response) => response.json())
-          .then((geojsonData) => {
-            displayRoutesOnMap(geojsonData); // Appel de la fonction pour afficher les trajets
+          if (!originCoords || !destinationCoords) return;
+
+          const cityData = [
+            {
+              CityName: originValue,
+              CoordinateX: originCoords.lat.toString(),
+              CoordinateY: originCoords.lng.toString(),
+            },
+            {
+              CityName: destinationValue,
+              CoordinateX: destinationCoords.lat.toString(),
+              CoordinateY: destinationCoords.lng.toString(),
+            },
+          ];
+
+          console.log("Data to send:", cityData);
+
+          fetch("http://localhost:8080/calculateRoutes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(cityData),
           })
-          .catch((error) => console.error("Erreur lors du chargement des données GeoJSON:", error));
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Server response:", data);
+              displayRoutesOnMap(data);
+            })
+            .catch((error) => {
+              console.error("Erreur lors de l'envoi des données :", error);
+              showPopup("error", "Erreur lors de l'envoi des données");
+            });
+        } catch (error) {
+          console.error("Erreur pendant la validation ou l'envoi :", error);
+        }
       });
     });
+
+    /**
+     * Utiliser la géolocalisation pour un champ donné (start ou end)
+     * @param {string} fieldName - "start" ou "end"
+     */
+    function useGeolocation(fieldName) {
+      if (!navigator.geolocation) {
+        showPopup("error", "La géolocalisation n'est pas prise en charge par votre navigateur.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log(`Géolocalisation pour ${fieldName}:`, { latitude, longitude });
+
+          // Afficher le marqueur sur la carte
+          if (fieldName === "start") {
+            window.updateStartMarker(latitude, longitude);
+            document.querySelector("auto-complete-input[name='start']").shadowRoot.querySelector("input").value =
+              `${latitude}, ${longitude}`;
+          } else if (fieldName === "end") {
+            window.updateEndMarker(latitude, longitude);
+            document.querySelector("auto-complete-input[name='end']").shadowRoot.querySelector("input").value =
+              `${latitude}, ${longitude}`;
+          }
+        },
+        (error) => {
+          console.error("Erreur de géolocalisation :", error);
+          showPopup("error", "Impossible d'obtenir votre position.");
+        }
+      );
+    }
   }
 }
 

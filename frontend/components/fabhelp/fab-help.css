@@ -1,0 +1,76 @@
+@import "../../css/colors.css";
+
+#fab-help {
+  background-color: var(--surface-container);
+  color: var(--primary);
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 16px;
+}
+
+#fab-help:hover {
+  background-color: var(--surface-container-high);
+}
+
+#help-pop-up {
+  background-color: var(--surface-container);
+  color: var(--primary);
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 300px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  border-radius: 16px;
+}
+
+#help-pop-up.hidden {
+  display: none;
+}
+
+.div-with-icon {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  position: relative;
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+}
+
+.pop-up-text {
+  display: flex;
+  align-items: center;
+}
+
+.pop-up-close-button {
+  background-color: var(--on-primary);
+  border-radius: 50%;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  height: 24px;
+  width: 24px;
+  margin: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pop-up-close-button img {
+  height: 12px;
+  width: 12px;
+}

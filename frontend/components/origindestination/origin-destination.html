@@ -6,13 +6,19 @@
       <div class="label-div">
         <label>Départ</label>
       </div>
-      <slot name="origin"></slot>
+      <div class="slot-container">
+        <slot name="origin"></slot>
+        <button class="geo-button" id="geo-start">📍</button>
+      </div>
     </div>
     <div class="text-field">
       <div class="label-div">
         <label>Arrivée</label>
       </div>
-      <slot name="destination"></slot>
+      <div class="slot-container">
+        <slot name="destination"></slot>
+        <button class="geo-button" id="geo-end">📍</button>
+      </div>
     </div>
     <div class="button-container">
       <button id="search-button">Rechercher</button>
