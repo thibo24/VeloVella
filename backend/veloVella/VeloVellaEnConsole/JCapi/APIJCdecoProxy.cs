@@ -24,14 +24,18 @@ namespace veloVella
             String pathFullyByfoot = await ors.GetPathByFoot(pointCoordinateStart, pointCoordinateEnd);
             if(start != null && end != null)
             {
-                String pathToStartStation = await ors.GetPathByFoot(pointCoordinateStart,
-                    new CityCoordinate(start.contractName, start.position));
+                CityCoordinate test = new CityCoordinate(start.contractName, start.position);
+                String pathToStartStation = await ors.GetPathByFoot(pointCoordinateStart, test);
                 String pathByVelo =  await ors.GetPathByVelo(start, end);
                 String pathToDestination = await ors.GetPathByFoot(new CityCoordinate(end.contractName, end.position), pointCoordinateEnd);
+                System.Console.WriteLine("velo");
+                System.Console.WriteLine(pathToStartStation + pathByVelo + pathToDestination);
                 return pathToStartStation + pathByVelo + pathToDestination;
             }
             else
-            {
+            { 
+                System.Console.WriteLine("foot");
+                System.Console.WriteLine(pathFullyByfoot);
                 return pathFullyByfoot;
             }
         }

@@ -13,7 +13,15 @@ namespace veloVella
             this.CoordinateY = position.longitude.ToString();
 
         }
+        public CityCoordinate()
+        { }
 
+        public CityCoordinate(string city, string coordinateX, string coordinateY)
+        {
+            this.CityName = city;
+            this.CoordinateX = coordinateX;
+            this.CoordinateY = coordinateY;
+        }
         [DataMember]
         public string CityName { get; set; }
 

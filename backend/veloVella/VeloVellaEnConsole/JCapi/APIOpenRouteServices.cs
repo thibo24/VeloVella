@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,13 @@ namespace veloVella.JCapi
         {
             this.apiKeyORS = apiKeyORS;
             this.apiBaseUrl = "https://api.openrouteservice.org/v2/";
+            client.DefaultRequestHeaders.Add("Authorization", apiKeyORS);
+
         }
 
 
         // https://api.openrouteservice.org /v2/directions/cycling-road/json
-
+        // j'ai changé a directions/cycling-mountain/geojson pck road été cassé (fait samedi) 
         public async Task<String> GetPathByVelo(Station start, Station end)
         {
             string coorStartX = start.position.latitude.ToString();
@@ -27,9 +30,9 @@ namespace veloVella.JCapi
             string coorEndX = end.position.latitude.ToString();
             string coorEndY = end.position.longitude.ToString();
 
-            var jsonContent = $"{{\"coordinates\":[[{coorStartX},{coorStartY}],[{coorEndX},{coorEndY}]],\"instructions\":\"true\",\"instructions_format\":\"html\",\"language\":\"fr-fr\"}}";
+            var jsonContent = $"{{\"coordinates\":[[{coorStartY},{coorStartX}],[{coorEndY},{coorEndX}]],\"instructions\":\"true\",\"instructions_format\":\"html\",\"language\":\"fr-fr\"}}";
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-            return await callAPI("directions/cycling-road/geojson", content);
+            return await callAPI("directions/cycling-mountain/geojson", content);
         }
 
 
@@ -39,7 +42,7 @@ namespace veloVella.JCapi
             string coorStartY = pointCoordinateStart.CoordinateY;
             string coorEndX = pointCoordinateEnd.CoordinateX;
             string coorEndY = pointCoordinateEnd.CoordinateY;
-            var jsonContent = $"{{\"coordinates\":[[{coorStartX},{coorStartY}],[{coorEndX},{coorEndY}]],\"instructions\":\"true\",\"instructions_format\":\"html\",\"language\":\"fr-fr\"}}";
+            var jsonContent = $"{{\"coordinates\":[[{coorStartY},{coorStartX}],[{coorEndY},{coorEndX}]],\"instructions\":\"true\",\"instructions_format\":\"html\",\"language\":\"fr-fr\"}}";
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             return await callAPI("directions/foot-walking/geojson", content);
 
@@ -47,7 +50,6 @@ namespace veloVella.JCapi
 
         public async Task<String> callAPI(String url,StringContent content)
         {
-            client.DefaultRequestHeaders.Add("Authorization", apiKeyORS);
             System.Console.WriteLine(apiBaseUrl + url);
             HttpResponseMessage response = await client.PostAsync(apiBaseUrl + url, content);
             response.EnsureSuccessStatusCode();

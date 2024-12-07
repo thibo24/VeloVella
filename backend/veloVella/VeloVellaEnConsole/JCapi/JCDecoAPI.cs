@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text.Json;
 using System.Device.Location;
+using System.Runtime.Remoting;
 using System.Security.Policy;
 using System.Text;
 
@@ -47,7 +48,7 @@ namespace veloVella
 
         public async Task<List<Station>> getStations(string contractName)
         {
-            string response = await callAPI("stations" + apiKeyJCDECO + "contractName="+contractName);
+            string response = await callAPI("stations" + apiKeyJCDECO + "contract=" + contractName);
             var contracts = JsonSerializer.Deserialize<List<Station>>(response,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return contracts;
@@ -56,17 +57,18 @@ namespace veloVella
 
         public Contract getContractsByName(string name)
         {
+            name = name.ToLower();
             foreach (var contract in contracts)
             {
-                foreach (var cites in contract.cities)
-                {
-                    if (cites == name)
-                    {
-                        return contract;
-                    }
+                if(contract.cities!= null){
+                   foreach (var cites in contract.cities)
+                   {
+                        if( cites.ToLower() == name){
+                            return contract;
+                        }
+                   }
                 }
             }
-
             return null;
         }
 
@@ -77,6 +79,11 @@ namespace veloVella
             Station closestStation = null;
             Double closestDistance = double.MaxValue;
             Contract contract = getContractsByName(pointCoordinate.CityName);
+
+            if (contract == null)
+            {
+                return null;
+            }
             List<Station> stations = await getStations(contract.name);
 
 

@@ -31,6 +31,7 @@ namespace veloVella
         {
             _listener.Start();
             Console.WriteLine("Server started...");
+            _apiJCdecoProxy = new APIJCdecoProxy();
 
             while (_listener.IsListening)
             {
