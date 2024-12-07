@@ -61,6 +61,13 @@ class OriginDestination extends HTMLElement {
         // Validate the addresses by simulating API verification
         validateAddress(originValue, "start");
         validateAddress(destinationValue, "end");
+
+        fetch("mock-data/Response.geojson") // Chemin relatif vers votre fichier
+          .then((response) => response.json())
+          .then((geojsonData) => {
+            displayRoutesOnMap(geojsonData); // Appel de la fonction pour afficher les trajets
+          })
+          .catch((error) => console.error("Erreur lors du chargement des données GeoJSON:", error));
       });
     });
   }
