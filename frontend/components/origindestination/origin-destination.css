@@ -19,3 +19,22 @@ label {
   font-size: 12px;
   padding-left: 16px;
 }
+
+.button-container {
+  text-align: right;
+  margin-top: 16px;
+}
+
+#search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+#search-button:hover {
+  background-color: var(--surface-tint);
+}
