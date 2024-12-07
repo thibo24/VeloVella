@@ -98,6 +98,7 @@ main * {
 #error-pop-up, #info-pop-up {
   visibility: hidden;
   opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease-in-out;
 }
 
 #error-pop-up.visible, #info-pop-up.visible {

@@ -42,8 +42,8 @@ class OriginDestination extends HTMLElement {
       searchButton.addEventListener("click", () => {
         console.log("Search button clicked");
 
-        const originInput = document.querySelector("auto-complete-input[name='start'] input");
-        const destinationInput = document.querySelector("auto-complete-input[name='end'] input");
+        const originInput = document.querySelector("auto-complete-input[name='start']").shadowRoot.querySelector("input");
+        const destinationInput = document.querySelector("auto-complete-input[name='end']").shadowRoot.querySelector("input");
 
         const originValue = originInput?.value || "";
         const destinationValue = destinationInput?.value || "";
@@ -90,20 +90,45 @@ function showPopup(type, message) {
 /**
  * Validate an address and show an error popup if invalid
  * @param {string} address - The address to validate
- * @param {string} fieldName - "start" or "end"
+ * @param {string} fieldName - "start" ou "end"
  */
 function validateAddress(address, fieldName) {
   console.log(`Validating address for ${fieldName}:`, address);
 
-  // Simulate address validation (replace with real API logic if needed)
-  if (!address.toLowerCase().includes("valid")) {
-    showPopup(
-      "error",
-      `Veuillez renseigner une adresse ${fieldName === "start" ? "de départ" : "d'arrivée"} valide`
-    );
-  } else {
-    console.log(`${fieldName} is valid:`, address);
-  }
+  // Construire l'URL pour appeler l'API de validation
+  const url = `https://api-adresse.data.gouv.fr/search/?q=${address.replaceAll(" ", "+")}&limit=1`;
+
+  // Appeler l'API pour valider l'adresse
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      // Vérifier si l'API renvoie des coordonnées
+      if (data.features && data.features.length > 0 && data.features[0].geometry) {
+        const [lng, lat] = data.features[0].geometry.coordinates;
+
+        console.log(`Adresse valide pour ${fieldName}:`, { lng, lat });
+
+        // Mettre à jour le marqueur sur la carte
+        if (fieldName === "start") {
+          window.updateStartMarker(lat, lng);
+        } else if (fieldName === "end") {
+          window.updateEndMarker(lat, lng);
+        }
+      } else {
+        // Si aucune coordonnée n'est trouvée, afficher une pop-up d'erreur
+        showPopup(
+          "error",
+          `Veuillez renseigner une adresse ${fieldName === "start" ? "de départ" : "d'arrivée"} valide`
+        );
+      }
+    })
+    .catch((err) => {
+      console.error(`Erreur lors de la validation de l'adresse pour ${fieldName}:`, err);
+      showPopup(
+        "error",
+        `Une erreur est survenue lors de la validation de l'adresse ${fieldName === "start" ? "de départ" : "d'arrivée"}`
+      );
+    });
 }
 
 customElements.define("origin-destination", OriginDestination);
