@@ -23,7 +23,7 @@ class OriginDestination extends HTMLElement {
 
           if (adress && adress.geometry && adress.geometry.coordinates) {
             const [lng, lat] = adress.geometry.coordinates;
-            console.log("Coordinates received:", { lng, lat });
+            console.log("Coordinates received:", { lat, lng });
 
             // Call the global functions defined in map.js
             if (name === "start") {
@@ -95,47 +95,74 @@ function showPopup(type, message) {
 }
 
 /**
- * Validate an address and show an error popup if invalid
- * @param {string} address - The address to validate
- * @param {string} fieldName - "start" ou "end"
+ * Check if the input is in GPS coordinates format (lat, lng)
+ * @param {string} input - The user input
+ * @returns {{ lat: number, lng: number } | null} Coordinates or null if invalid
  */
-function validateAddress(address, fieldName) {
-  console.log(`Validating address for ${fieldName}:`, address);
+function parseGpsCoordinates(input) {
+  const gpsRegex = /^\s*([+-]?\d+(\.\d+)?),\s*([+-]?\d+(\.\d+)?)\s*$/;
+  const match = input.match(gpsRegex);
 
-  // Construire l'URL pour appeler l'API de validation
-  const url = `https://api-adresse.data.gouv.fr/search/?q=${address.replaceAll(" ", "+")}&limit=1`;
+  if (match) {
+    const lat = parseFloat(match[1]);
+    const lng = parseFloat(match[3]);
 
-  // Appeler l'API pour valider l'adresse
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      // Vérifier si l'API renvoie des coordonnées
-      if (data.features && data.features.length > 0 && data.features[0].geometry) {
-        const [lng, lat] = data.features[0].geometry.coordinates;
+    // Validate latitude and longitude ranges
+    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+      return { lat, lng };
+    }
+  }
+  return null;
+}
 
-        console.log(`Adresse valide pour ${fieldName}:`, { lng, lat });
 
-        // Mettre à jour le marqueur sur la carte
-        if (fieldName === "start") {
-          window.updateStartMarker(lat, lng);
-        } else if (fieldName === "end") {
-          window.updateEndMarker(lat, lng);
-        }
-      } else {
-        // Si aucune coordonnée n'est trouvée, afficher une pop-up d'erreur
-        showPopup(
-          "error",
-          `Veuillez renseigner une adresse ${fieldName === "start" ? "de départ" : "d'arrivée"} valide`
-        );
+async function validateAddress(input, fieldName) {
+  console.log(`Validating address for ${fieldName}:`, input);
+
+  // Check if the input is GPS coordinates
+  const gpsCoords = parseGpsCoordinates(input);
+  if (gpsCoords) {
+    console.log(`GPS coordinates detected for ${fieldName}:`, gpsCoords);
+    if (fieldName === "start") {
+      window.updateStartMarker(gpsCoords.lat, gpsCoords.lng);
+    } else if (fieldName === "end") {
+      window.updateEndMarker(gpsCoords.lat, gpsCoords.lng);
+    }
+    return gpsCoords; // Return the coordinates
+  }
+
+  // Otherwise, treat the input as an address
+  const url = `https://api-adresse.data.gouv.fr/search/?q=${input.replaceAll(" ", "+")}&limit=1`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.features && data.features.length > 0 && data.features[0].geometry) {
+      const [lng, lat] = data.features[0].geometry.coordinates;
+      console.log(`Adresse valide pour ${fieldName}:`, { lat, lng });
+      if (fieldName === "start") {
+        window.updateStartMarker(lat, lng);
+      } else if (fieldName === "end") {
+        window.updateEndMarker(lat, lng);
       }
-    })
-    .catch((err) => {
-      console.error(`Erreur lors de la validation de l'adresse pour ${fieldName}:`, err);
+      return { lat, lng };
+    } else {
       showPopup(
         "error",
-        `Une erreur est survenue lors de la validation de l'adresse ${fieldName === "start" ? "de départ" : "d'arrivée"}`
+        `Veuillez renseigner une adresse ${fieldName === "start" ? "de départ" : "d'arrivée"} valide`
       );
-    });
+      return null;
+    }
+  } catch (err) {
+    console.error(`Erreur lors de la validation de l'adresse pour ${fieldName}:`, err);
+    showPopup(
+      "error",
+      `Une erreur est survenue lors de la validation de l'adresse ${fieldName === "start" ? "de départ" : "d'arrivée"}`
+    );
+    return null;
+  }
 }
+
 
 customElements.define("origin-destination", OriginDestination);

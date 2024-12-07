@@ -35,24 +35,45 @@ class AutoCompleteAdress extends HTMLElement {
 
     // Listener for input value change
     input.addEventListener("input", function (e) {
-      const selectedValue = e.target.value;
+      const selectedValue = e.target.value.trim();
       console.log("Valeur dans l'input :", selectedValue);
 
+      // Vérifier si le champ contient des coordonnées GPS
+      const gpsCoords = parseGpsCoordinates(selectedValue);
+      if (gpsCoords) {
+        console.log("Coordonnées GPS détectées :", gpsCoords);
+
+        // Émettre un événement personnalisé avec les coordonnées GPS
+        const gpsEvent = new CustomEvent("optionChosen", {
+          detail: {
+            name: context.name,
+            adress: {
+              geometry: { coordinates: [gpsCoords.lng, gpsCoords.lat] },
+            },
+          },
+        });
+        document.dispatchEvent(gpsEvent);
+        return;
+      }
+
+      // Continuer avec la logique existante pour les adresses
       const datalist = context.shadowRoot.getElementById("suggestion");
-      const selectedOption = Array.from(datalist.options).find(option => option.value === selectedValue);
+      const selectedOption = Array.from(datalist.options).find(
+        (option) => option.value === selectedValue
+      );
 
       if (selectedOption) {
         console.log("Option correspondante trouvée :", selectedOption.value);
 
-        const addressData = JSON.parse(selectedOption.dataset.adress); // Extraire les données
+        const addressData = JSON.parse(selectedOption.dataset.adress);
         console.log("Données associées :", addressData);
 
         // Émettre l'événement personnalisé
         let event = new CustomEvent("optionChosen", {
           detail: {
             name: context.name,
-            adress: addressData
-          }
+            adress: addressData,
+          },
         });
         document.dispatchEvent(event);
       }
