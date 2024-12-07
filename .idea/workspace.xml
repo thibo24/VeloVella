@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2ce578dd-f78a-4338-91f7-dd952b4fdff1" name="Changes" comment="autocomplete">
-      <change beforePath="$PROJECT_DIR$/VeloVella.iml" beforeDir="false" afterPath="$PROJECT_DIR$/VeloVella.iml" afterDir="false" />
+    <list default="true" id="2ce578dd-f78a-4338-91f7-dd952b4fdff1" name="Changes" comment="reorg file">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +105,8 @@
       <workItem from="1729968694345" duration="146000" />
       <workItem from="1730969378844" duration="9107000" />
       <workItem from="1732375927453" duration="3932000" />
+      <workItem from="1732524252416" duration="4113000" />
+      <workItem from="1733167059775" duration="25000" />
     </task>
     <task id="LOCAL-00001" summary="autocomplete">
       <option name="closed" value="true" />
@@ -114,7 +116,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732523401555</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="reorg file">
+      <option name="closed" value="true" />
+      <created>1732524284233</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732524284233</updated>
+    </task>
+    <task id="LOCAL-00003" summary="reorg file">
+      <option name="closed" value="true" />
+      <created>1732524313411</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732524313411</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,7 +151,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="autocomplete" />
-    <option name="LAST_COMMIT_MESSAGE" value="autocomplete" />
+    <MESSAGE value="reorg file" />
+    <option name="LAST_COMMIT_MESSAGE" value="reorg file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -151,7 +170,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/components/autocomplete/autocomplete-adress.js</url>
           <line>79</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
