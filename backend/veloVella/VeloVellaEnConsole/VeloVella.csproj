@@ -92,10 +92,17 @@
     <Compile Include="JCapi\JCDecoAPI.cs" />
     <Compile Include="model\Availabilities.cs" />
     <Compile Include="model\CityCoordinate.cs" />
+    <Compile Include="model\FeatureCollection.cs" />
     <Compile Include="model\Contract.cs" />
+    <Compile Include="model\Feature.cs" />
+    <Compile Include="model\Geometry.cs" />
     <Compile Include="model\MainStands.cs" />
     <Compile Include="model\Position.cs" />
+    <Compile Include="model\Properties.cs" />
+    <Compile Include="model\Segment.cs" />
     <Compile Include="model\Station.cs" />
+    <Compile Include="model\Step.cs" />
+    <Compile Include="model\Summary.cs" />
     <Compile Include="model\TotalStands.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -72,7 +72,7 @@ namespace veloVella
             return null;
         }
 
-        public async Task<Station> getClosestContract(CityCoordinate pointCoordinate)
+        public async Task<Station> getClosestContract(CityCoordinate pointCoordinate, bool isStart)
         {
             var geoCoordinate = new GeoCoordinate(double.Parse(pointCoordinate.CoordinateX),
                 double.Parse(pointCoordinate.CoordinateY));
@@ -91,7 +91,7 @@ namespace veloVella
             {
                 var stationCoordinate = new GeoCoordinate(station.position.latitude, station.position.longitude);
                 double distance = geoCoordinate.GetDistanceTo(stationCoordinate);
-                if (distance < closestDistance)
+                if (distance < closestDistance && ((isStart && station.mainStands.availabilities.bikes > 0) || (!isStart && station.mainStands.capacity > 0 )))
                 {
                     closestDistance = distance;
                     closestStation = station;

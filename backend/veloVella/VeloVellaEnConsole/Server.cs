@@ -79,14 +79,6 @@ namespace veloVella
 
         private void calculateRoutes(HttpListenerRequest request, HttpListenerResponse response)
         {
-            if (response == null)
-            {
-                System.Console.WriteLine("response == null ");
-            }
-            if (request == null)
-            {
-                System.Console.WriteLine("reqest == null ");
-            }
             if (request.HttpMethod == "POST")
             {
                 // Lire le corps de la requête
