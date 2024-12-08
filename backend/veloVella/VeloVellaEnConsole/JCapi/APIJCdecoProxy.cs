@@ -42,7 +42,7 @@ namespace veloVella
                 FeatureCollection RespORSendVelo = JsonConvert.DeserializeObject<FeatureCollection>(pathToDestination);
 
 
-                if (RespORSStartVelo == null || RespORSVelo == null || RespORSendVelo == null)
+                if (RespORSStartVelo.Features.FirstOrDefault() == null || RespORSVelo.Features.FirstOrDefault() == null || RespORSendVelo.Features.FirstOrDefault() == null)
                 {
                     Console.WriteLine("One of the FeatureCollections is null.");
                     return pathFullyByfoot;

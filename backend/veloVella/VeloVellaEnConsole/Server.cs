@@ -52,6 +52,17 @@ namespace veloVella
         {
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
+           
+            response.AddHeader("Access-Control-Allow-Origin", "*");
+            response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
+
+            if (request.HttpMethod == "OPTIONS")
+            {
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Close();
+                return;
+            }
 
             switch (request.Url.AbsolutePath)
             {
@@ -59,6 +70,7 @@ namespace veloVella
                     String ping = "reçu";
                     byte[] dd = Encoding.UTF8.GetBytes(ping);
                     response.ContentLength64 = dd.Length;
+                    response.StatusCode = (int)HttpStatusCode.OK;
                     response.OutputStream.Write(dd, 0, dd.Length);
                     response.OutputStream.Close();
                     break;
@@ -96,6 +108,7 @@ namespace veloVella
                     CityCoordinate pointCoordinateEnd = coordinates[1];
                     string path = _apiJCdecoProxy.getPathBetwenToPoint(pointCoordinateStart, pointCoordinateEnd).Result;
                     byte[] buffer = Encoding.UTF8.GetBytes(path);
+                    response.StatusCode = (int)HttpStatusCode.OK;
                     response.ContentLength64 = buffer.Length;
                     response.OutputStream.Write(buffer, 0, buffer.Length);
                     response.OutputStream.Close();
