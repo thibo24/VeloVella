@@ -23,20 +23,15 @@ label {
   position: relative;
 }
 
-.slot-container {
+.input-with-button {
   display: flex;
   align-items: center; /* Aligne le champ et le bouton horizontalement */
   background-color: var(--on-primary);
   border-radius: 16px;
 }
 
-slot[name="origin"]::slotted(input),
-slot[name="destination"]::slotted(input) {
-  flex: 1 1 auto; /* Permet au champ de remplir l'espace disponible */
-  border: none;
-  outline: none;
-  font-size: 16px;
-  background-color: transparent;
+.slot-div {
+  width: 100%;
 }
 
 .geo-button {
